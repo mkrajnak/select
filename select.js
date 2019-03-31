@@ -1,17 +1,37 @@
 
-document.getElementById('body').onload = () => {
-  console.log("Hello");
-  var select = document.getElementById("custom-select");
-  console.log(document.getElementById("custom-select"));
-
+var render = () => {
+  while (true) {
+    // console.log('lel');
+  }
 }
-console.log("Hello2");
+
+
+var showMenu = () => {
+  console.log('Show Menu');
+}
+
+
+var loaded = () => {
+  window.removeEventListener('load', loaded);
+  const select = document.getElementById("custom-select");
+  console.log(select.options)
+  for(opt of select.options) {
+    console.log(opt.title)
+    opt.innerHTML += ' ' + opt.title
+  }
+  // select.unbind('click')
+  select.addEventListener('mousedown', showMenu)
+}
 
 
 
-// console.log(select.options)
 
-// select.options[select.options.length] = new Option('Lel', 'lel');
+
+
+window.addEventListener('load', loaded)
+
+
+
 
 // class Extend Evented {
 //   constructor() {
