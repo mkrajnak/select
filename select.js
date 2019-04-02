@@ -1,5 +1,5 @@
-var changeState = (elem) => {
-  for (opt of elem.getElementsByTagName('opt')) {
+var changeState = (select) => {
+  for (opt of select.getElementsByTagName('opt')) {
     opt.style.display = opt.style.display === 'none' ? 'block' : 'none';
   }
 }
@@ -27,27 +27,11 @@ var filterItems = (e, label) => {
 }
 
 
-var showMenu = (e, elem) => {
-  if (!elem) {
-    closeAll()
-    document.removeEventListener('mousedown', showMenu);
-    return;
-  }
-  changeState(elem);
-  if (elem.getElementsByTagName('opt')[0].style.display === 'block' ) {
-    // console.log(elem.getElementsByTagName('opt')[0].style.display)
-    // document.addEventListener('mousedown', (e) => showMenu(e));
-  } else {
-    // console.log('Removing listener')
-  }
-}
-
-
-var changeValue = (e, opt) => {
+var changeValue = (opt) => {
   let select = opt.parentNode.parentNode
   let changed = opt.getElementsByTagName('value')[0].innerHTML;
   select.getElementsByTagName('xlabel')[0].innerHTML = changed;
-  showMenu(e);
+  changeState(select);
 }
 
 
@@ -63,8 +47,19 @@ var createOption = (opt) => {
   customOpt.appendChild(description);
   // Initial hide
   customOpt.style.display='none';
-  customOpt.addEventListener('click', (e) => changeValue(e, customOpt))
   return customOpt;
+}
+
+var clickHandler = (target) => {
+  if (target.tagName === 'XLABEL') {
+    changeState(target.parentNode);
+  } else if (target.tagName === 'OPT') {
+    changeValue(target)
+  } else if (target.tagName === 'VALUE' || target.tagName === 'DESCRIPTION') {
+    changeValue(target.parentNode)
+  } else {
+    closeAll()
+  }
 }
 
 
@@ -77,11 +72,9 @@ var createCustomSelectElement = (select) => {
   var customSelect = document.createElement("customselect");
   var customOptions = document.createElement("options");
 
-  console.log(select.getAttribute('mode'))
 
   if (select.getAttribute('mode') === '1') {
     var customLabel = document.createElement("xlabel");
-    console.log("asdasdasdasd")
    } else {
      var customLabel = document.createElement("input");
    }
@@ -102,11 +95,9 @@ var createCustomSelectElement = (select) => {
   customSelect.appendChild(customOptions);
   document.body.append(customSelect)
   // Register events
-  customLabel.addEventListener('click', (e) => showMenu(e, customSelect))
   if (select.getAttribute('mode') === '2') {
     customLabel.addEventListener('keypress', (e) => filterItems(e, customLabel))
   }
-  console.log('end')
 }
 
 
@@ -117,3 +108,4 @@ var loaded = () => {
 }
 
 window.addEventListener('load', loaded)
+window.addEventListener('click', (e) => clickHandler(e.target))
