@@ -4,13 +4,11 @@ customselect {
   color: white;
   margin: 3px;
   width: auto;
-  min-height: 50px:
-
+  width: 250px;
 }
 
 xlabel {
   padding: 10px;
-  min-height: 50px:
   width: 80%;
   display: block;
   font-size: 1em;
@@ -19,35 +17,46 @@ xlabel {
 options {
   font-size: 1em;
   background-color:inherit;
-  width: 80%;
+  width: inherit;
   position: absolute;
-
 }
 
 opt {
-    border-top: 0.5px solid grey;
+    border-top: 0.5px solid white;
     padding: 10px;
+}
+
+opt:hover {
+  background-color: #00BFFF;
 }
 
 value{
   display: inline-block;
-  min-width: 100px;
-  width: 20%;
   float:left;
+  width: auto;
+  padding-right: 5px;
 }
-
 
 description {
   display: inline-block;
-  width: 80%;
   min-width: auto;
 }
 
-opt:hover {
-    background-color: #00BFFF;
-
-}
 
 input {
+  display: block;
+  outline: none;
+  border: none;
   width: 100%;
+  padding: 10px 0px 10px 0px;
+  margin-left: 5px;
+  background-color: DodgerBlue;
+  color: white;
+  font-size: 1em;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #abbbd3;
+   font-style: italic;
 }
