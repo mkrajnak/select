@@ -1,6 +1,3 @@
-// import './custom-select.js';
-
-
 var changeState = (elem) => {
   for (opt of elem.getElementsByTagName('opt')) {
     opt.style.display = opt.style.display === 'none' ? 'block' : 'none';
@@ -22,7 +19,6 @@ var filterItems = (e, label) => {
   nodes = Array.from(document.getElementsByTagName("customselect"));
   nodes.forEach((select) => {
     for (opt of select.getElementsByTagName('opt')) {
-      console.log(opt)
       if (!opt.getElementsByTagName('value')[0].innerHTML.includes(label.value)) {
         opt.style.display = 'none';
       }
@@ -33,18 +29,16 @@ var filterItems = (e, label) => {
 
 var showMenu = (e, elem) => {
   if (!elem) {
-    console.log('leasasdasdl')
     closeAll()
     document.removeEventListener('mousedown', showMenu);
     return;
   }
-  console.log('lel')
   changeState(elem);
   if (elem.getElementsByTagName('opt')[0].style.display === 'block' ) {
-    console.log(elem.getElementsByTagName('opt')[0].style.display)
+    // console.log(elem.getElementsByTagName('opt')[0].style.display)
     // document.addEventListener('mousedown', (e) => showMenu(e));
   } else {
-    console.log('Removing listener')
+    // console.log('Removing listener')
   }
 }
 
