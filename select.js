@@ -60,7 +60,6 @@ var createOption = (opt) => {
 
 // Handle all click events in window
 var clickHandler = (target) => {
-  closeAll()
   if (target.tagName === 'XLABEL') {
     changeState(target.parentNode);
   } else if (target.tagName === 'INPUT') {
@@ -70,6 +69,9 @@ var clickHandler = (target) => {
     changeValue(target)
   } else if (target.tagName === 'VALUE' || target.tagName === 'DESCRIPTION') {
     changeValue(target.parentNode)
+    closeAll()
+  } else {
+    closeAll()
   }
 }
 
