@@ -2,6 +2,7 @@
 var changeState = (select) => {
   for (opt of select.getElementsByTagName('opt')) {
     opt.style.display = opt.style.display === 'none' ? 'block' : 'none';
+    select.showing = opt.style.display === 'block'
   }
   if (select.mode === '1') {
     arrow = select.getElementsByTagName('arrow')[0]
@@ -15,6 +16,7 @@ var closeAll = () => {
   nodes.forEach((select) => {
     for (opt of select.getElementsByTagName('opt')) {
       opt.style.display = 'none';
+      select.showing = false;
     }
     if (select.mode === '1') {
         select.getElementsByTagName('arrow')[0].innerHTML = '▼';
@@ -23,11 +25,15 @@ var closeAll = () => {
 }
 
 var filterSelect = (select, filter) => {
+  let show = false;
   for (opt of select.getElementsByTagName('opt')) {
     if (!opt.getElementsByTagName('value')[0].innerHTML.includes(filter)) {
       opt.style.display = 'none';
+    } else {
+      show = true;
     }
   }
+  select.showing = show;
 }
 
 // Make sure that we are lisenin to the right click
@@ -67,13 +73,31 @@ var createOption = (opt) => {
 
 // Handle all click events in window
 var clickHandler = (target) => {
+  let opened = false;
+  for (s of document.getElementsByTagName("customselect")) {
+    if (s.showing) {
+      opened = true; // Indicator that one select is opened already
+    }
+  }
   if (target.tagName === 'XSELECT') {
+    if (opened) {
+      closeAll();
+    } else {
     changeState(target.parentNode);
+    }
   } else if (target.tagName === 'XLABEL' || target.tagName === 'ARROW') {
+    if (opened) {
+      closeAll();
+    } else {
     changeState(target.parentNode.parentNode);
+    }
   } else if (target.tagName === 'INPUT') {
+    if (opened) {
+      closeAll();
+    } else {
     changeState(target.parentNode);
     filterSelect(target.parentNode, target.value);
+    }
   } else if (target.tagName === 'OPT') {
     changeValue(target)
   } else if (target.tagName === 'VALUE' || target.tagName === 'DESCRIPTION') {
@@ -117,6 +141,9 @@ var createCustomSelectElement = (select) => {
   // Add new select, set mode, new options
   var customSelect = document.createElement("customselect");
   customSelect.mode = select.getAttribute('mode');
+  customSelect.setAttributeNode(document.createAttribute("showing"));
+  customSelect.showing = false;
+
   var customOptions = document.createElement("options");
   var customLabel = getCustomLabel(customSelect.mode);
   let text = customLabel.getElementsByTagName('xlabel')
@@ -126,7 +153,6 @@ var createCustomSelectElement = (select) => {
   customSelect.setAttributeNode(id);
   // Create options and add first value
   for (opt of options) {
-    // console.log(text)
     if (customSelect.mode === '1' &&  !text[0].innerHTML) {
       text[0].innerHTML = opt.text;
     }
