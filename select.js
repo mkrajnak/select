@@ -86,6 +86,14 @@ var getCustomLabel = (mode) => {
   }
 }
 
+
+var addStyle = () => {
+  var style = document.createElement("link");
+  style.rel = "stylesheet";
+  style.href = "select.css";
+  document.getElementsByTagName("head")[0].appendChild(style);
+}
+
 var createCustomSelectElement = (select) => {
   // Read all options, get rid of the old select
   const options = select.options;
@@ -122,6 +130,7 @@ var loaded = () => {
   window.removeEventListener('load', loaded);
   nodes = Array.from(document.getElementsByClassName("custom-select"));
   nodes.forEach((s) => createCustomSelectElement(s));
+  addStyle()
 }
 
 window.addEventListener('load', loaded)

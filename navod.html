@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Select demo</title>
+    <style src="select.css"></style>
+
+  </head>
+  <body>
+    <h1>Manual for custom-select tag</h1>
+    <div>
+      <h2>Files to include:</h2>
+      <ul>
+        <li>select.js</li>
+        <li>select.css</li>
+      </ul>
+      <h2>Updating the HTML:</h2>
+      <ul>
+        <li>
+          <h3>Header:</h3>
+          <xmp><script src="select.js" type="text/javascript"></script></xmp>
+        </li>
+        <li>
+          <h3>Select Definiton Example</h3>
+<xmp><select class="custom-select" id="s2" mode="2">
+  <option value="a1" title='Lorem ipsum1'>a1</option>
+  <option value="a2" title='Lorem ipsum2'>a2</option>
+  <option value="a3" title='Lorem ipsum3'>a3</option>
+  <option value="a4" title='Lorem ipsum4'>a4</option>
+</select></xmp>
+        </li>
+        <li>
+          <h3>Mandatory TAG Attributes</h3>
+          <ul>
+            <li>class="custom-select"</li>
+            <li>id="s2" custom-select will not work properly without unique id</li>
+          </ul>
+        </li>
+        <li>
+          <h3>Other TAG Attributes</h3>
+          <ul>
+            <li>mode='1' -> Classic select without typing filter</li>
+            <li>mode='2' -> Select with typing filter</li>
+          </ul>
+        </li>
+        <li>
+          <h3>Option TAG Attributes</h3>
+          <ul>
+            <li>title='1' -> Additional text that will be included once select clicked</li>
+            <li>value='1' -> Unique identifier of the selected value</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
