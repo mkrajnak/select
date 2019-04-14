@@ -3,6 +3,10 @@ var changeState = (select) => {
   for (opt of select.getElementsByTagName('opt')) {
     opt.style.display = opt.style.display === 'none' ? 'block' : 'none';
   }
+  if (select.mode === '1') {
+    arrow = select.getElementsByTagName('arrow')[0]
+    arrow.innerHTML = arrow.innerHTML === '▲' ? '▼' : '▲';
+  }
 }
 
 // Click outside => close all customselect elements
@@ -12,9 +16,11 @@ var closeAll = () => {
     for (opt of select.getElementsByTagName('opt')) {
       opt.style.display = 'none';
     }
+    if (select.mode === '1') {
+        select.getElementsByTagName('arrow')[0].innerHTML = '▼';
+    }
   });
 }
-
 
 var filterSelect = (select, filter) => {
   for (opt of select.getElementsByTagName('opt')) {
@@ -24,6 +30,7 @@ var filterSelect = (select, filter) => {
   }
 }
 
+// Make sure that we are lisenin to the right click
 var filterEvent = (e, label) => {
   closeAll();
   changeState(label.parentNode);
@@ -60,8 +67,10 @@ var createOption = (opt) => {
 
 // Handle all click events in window
 var clickHandler = (target) => {
-  if (target.tagName === 'XLABEL') {
+  if (target.tagName === 'XSELECT') {
     changeState(target.parentNode);
+  } else if (target.tagName === 'XLABEL' || target.tagName === 'ARROW') {
+    changeState(target.parentNode.parentNode);
   } else if (target.tagName === 'INPUT') {
     changeState(target.parentNode);
     filterSelect(target.parentNode, target.value);
@@ -75,10 +84,15 @@ var clickHandler = (target) => {
   }
 }
 
-
+// returns a select label tag, depends on mode
 var getCustomLabel = (mode) => {
   if (mode === '1') {
-    return document.createElement("xlabel");
+    let xselect = document.createElement("xselect");
+    xselect.appendChild(document.createElement("xlabel"));
+    let arrow = document.createElement("arrow");
+    arrow.innerHTML = '▼';
+    xselect.appendChild(arrow);
+    return xselect;
   } else {
     let lbl = document.createElement("input");
     lbl.placeholder = 'Type to search';
@@ -86,7 +100,7 @@ var getCustomLabel = (mode) => {
   }
 }
 
-
+// Simply append the stylesheet of the select to a new document
 var addStyle = () => {
   var style = document.createElement("link");
   style.rel = "stylesheet";
@@ -97,28 +111,30 @@ var addStyle = () => {
 var createCustomSelectElement = (select) => {
   // Read all options, get rid of the old select
   const options = select.options;
+  const parent = select.parentNode;
   select.parentNode.removeChild(select);
+
   // Add new select, set mode, new options
   var customSelect = document.createElement("customselect");
   customSelect.mode = select.getAttribute('mode');
   var customOptions = document.createElement("options");
   var customLabel = getCustomLabel(customSelect.mode);
-
+  let text = customLabel.getElementsByTagName('xlabel')
+  // Recreate id attr
   var id = document.createAttribute("id");
   id.value = select.id;
   customSelect.setAttributeNode(id);
   // Create options and add first value
   for (opt of options) {
-    if (!customLabel.innerHTML && customSelect.mode === '1') {
-      customLabel.innerHTML = opt.text;
+    // console.log(text)
+    if (customSelect.mode === '1' &&  !text[0].innerHTML) {
+      text[0].innerHTML = opt.text;
     }
     customOptions.appendChild(createOption(opt));
   }
-  var div = document.createElement("div");
-  var arrow = document.createElement("options");
   customSelect.appendChild(customLabel);
   customSelect.appendChild(customOptions);
-  document.body.append(customSelect);
+  parent.append(customSelect);
   // Register events
   if (customSelect.mode === '2') {
     customLabel.addEventListener('input', (e) => filterEvent(e, customLabel));
@@ -133,5 +149,6 @@ var loaded = () => {
   addStyle()
 }
 
+// Once document is cloaded execute script
 window.addEventListener('load', loaded)
 window.addEventListener('click', (e) => clickHandler(e.target))

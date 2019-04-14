@@ -7,11 +7,25 @@ customselect {
   width: 250px;
 }
 
-xlabel {
-  padding: 10px;
-  width: 80%;
+xselect {
   display: block;
   font-size: 1em;
+  padding: 10px;
+}
+
+xlabel {
+  display: inline-block;
+  width: 80%;
+}
+
+arrow {
+  width: 10%;
+  float:right;
+}
+
+description {
+  font-style: italic;
+  font-size: 0.75em;
 }
 
 options {
@@ -22,8 +36,8 @@ options {
 }
 
 opt {
-    border-top: 0.5px solid white;
-    padding: 10px;
+  border-top: 0.5px solid white;
+  padding: 10px;
 }
 
 opt:hover {
@@ -33,8 +47,9 @@ opt:hover {
 value{
   display: inline-block;
   float:left;
-  width: auto;
+  width: 25%, auto;
   padding-right: 5px;
+
 }
 
 description {
@@ -58,5 +73,5 @@ input {
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
   color: #abbbd3;
-   font-style: italic;
+  font-style: italic;
 }
